@@ -9,6 +9,7 @@ src/firebase.js
 # Editor directories and files
 .idea
 .vscode
+*.bat
 *.suo
 *.ntvs*
 *.njsproj
