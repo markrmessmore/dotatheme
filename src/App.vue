@@ -52,8 +52,12 @@
 export default {
   data () {
     return {
-      drawer: false,
-      navList: [
+      drawer: false
+    }
+  },
+  computed: {
+    navList () {
+      let navList = [
         {
           title: "Create Theme",
           icon: "create",
@@ -65,6 +69,31 @@ export default {
           link: "/login"
         },
       ]
+      if (this.$store.getters.getUser !== null && this.$store.getters.getUser !== "undefined") {
+        navList = [
+          {
+            title: "Create Theme",
+            icon: "create",
+            link: "/createTheme"
+          },
+          {
+            title: "Manage Themes",
+            icon: "view_list",
+            link: "/themes"
+          },
+          {
+            title: "Manage Heroes",
+            icon: "people_outline",
+            link: "/heroes"
+          },
+          {
+            title: "Sign Out",
+            icon: "play_for_work",
+            link: ""
+          }
+        ]
+      }
+      return navList
     }
   },
   name: 'App'

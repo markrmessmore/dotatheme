@@ -1,13 +1,96 @@
 <template lang="html">
-  <div class="">
-    Admin Login
-  </div>
+  <v-container>
+    <v-layout row v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <page-error @dismissed="onDismissed" :errMsg="error.message"></page-error>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3>
+        <v-card>
+          <v-card-title xs12>
+            <h3 class="title" text-xs-center>DotaTheme.com Login:</h3>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <form @submit.prevent="login">
+                <v-layout row>
+                  <v-flex sm12>
+                    <v-text-field
+                      name="adminEmail"
+                      label="Email"
+                      id="email"
+                      v-model="email"
+                      type="email"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex sm12>
+                    <v-text-field
+                      name="password"
+                      label="Password"
+                      id="password"
+                      v-model="password"
+                      type="password"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex sm12>
+                    <v-btn type="submit" @click="login" :disabled="loading" :loading="loading">
+                      Login
+                      <span slot="loader" class="custom-loader">
+                        <v-icon light>cached</v-icon>
+                      </span>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </form>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      email: "",
+      password: ""
+    }
+  },
+  computed: {
+    user () {
+      return this.$store.getters.user
+    },
+    error () {
+      // return this.$store.getters.getErrors
+    },
+    loading (){
+      // return this.$store.getters.getLoading
+    }
+  },
+  watch: {
+    user (value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push('/')
+        console.log("Logged In.")
+      }
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('signIn', {email: this.email, password: this.password})
+    },
+    onDismissed(){
+      // this.$store.dispatch('clearError')
+    }
+  }
 }
 </script>
-
-<style lang="css">
-</style>

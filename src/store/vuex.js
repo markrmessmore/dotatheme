@@ -1,36 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    heroes: [
-      {
-        name: "Witch Doctor",
-        attribute: "Intelligence",
-        aghs: true,
-        color: "Purple",
-        img: "https://d1u5p3l4wpay3k.cloudfront.net/dota2_gamepedia/3/33/Witch_Doctor_icon.png?version=47cfe2ee65a45d5356dce201089cdbbd",
-        skills: ["Paralyzing Cask", "Voodoo Restoration", "Maledict", "Death Ward"]
-      },
-      {
-        name: "Abaddon",
-        attribute: "Strength",
-        aghs: true,
-        color: "Black",
-        img: "https://d1u5p3l4wpay3k.cloudfront.net/dota2_gamepedia/2/26/Abaddon_icon.png?version=b115fcf61682dc67860ce75bf90c950e",
-        skills: ["Mist Coil", "Aphotic Shield", "Curse of Avernus", "Borrowed Time"]
-      },
-      {
-        name: "Monkey King",
-        attribute: "Agility",
-        aghs: false,
-        color: "Brown",
-        img: "https://d1u5p3l4wpay3k.cloudfront.net/dota2_gamepedia/7/7b/Monkey_King_icon.png?version=f248a4549ebe79593fb663f7a49f1a04",
-        skills: ["Boundless Strike", "Tree Dance", "Primal Spring", "Jingu Mastery", "Mischief", "Wokong's Command"]
-      },
-    ],
+    user: null,
+    heroes: [],
     themes: [
       {
         name: "Ice Heroes",
@@ -47,21 +24,95 @@ export const store = new Vuex.Store({
     ]
   },
   mutations: {
+    addHero (state, payload) {
+      state.heroes.push(payload);
+    },
+    setUser (state, payload) {
+      state.user = payload.id;
+    },
     sortThemeHeroes (state) {
       var i;
       var themesToSort = state.themes;
       for (i=0; i<themesToSort.length; i++) {
         themesToSort[i].heroes.sort()
       }
+    },
+    createNewTheme (state, payload) {
+      state.themes.push(payload)
     }
   },
   actions: {
+    getHeroes ({commit}){
+      console.log("Getting Heroes");
+      var dbHeroes = firebase.database().ref('Heroes/')
+      dbHeroes.orderByChild("hero").on("child_added", function(data) {
+        var heroInfo = {
+          hero: data.val().hero,
+          characteristics: {
+            aghs: data.val().characteristics.aghs,
+            attribute: data.val().characteristics.attribute,
+            color: data.val().characteristics.color,
+            img: data.val().characteristics.img,
+            passive: data.val().characteristics.passive
+          }
+        }
+        commit('addHero', heroInfo);
+      });
+
+    },
+    signIn ({commit}, payload) {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(
+        user => {
+          const newUser = {
+            id: user.id
+          }
+          commit('setUser', newUser);
+        }
+      )
+      .catch(
+        error => {
+          console.log(error);
+        }
+      )
+    },
     sortThemeHeroes(context){
       context.commit('sortThemeHeroes')
+    },
+    createNewTheme({commit}, payload){
+      const userTheme = {
+        name: payload.themeName,
+        description: payload.themDesc,
+        heroes: payload.selectedHeroes,
+        notes: ""
+      }
+      firebase.database().ref('Themes').push(userTheme)
+        .then((data) => {
+          commit('createNewTheme', userTheme)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    createNewHero(state) {
+      var i;
+      // for (i=0; i<this.state.heroes.length; i++) {
+      //   firebase.firestore().collection('heroes').doc(this.state.heroes[i].hero)
+      //   .then(function(res){
+      //     console.log("Hero created. Document reference:" + res);
+      //   })
+      //   .catch(function(res){
+      //     console.error("Error adding document: " + error);
+      //   })
+      // }
     }
   },
   getters: {
+    getUser (state) {
+      return state.user
+    },
     getHeroes (state) {
+      this.$store.dispatch('getHeroes');
       return state.heroes.sort((heroA, heroB) => {
         return state.heroA > state.heroB
       })
@@ -70,6 +121,33 @@ export const store = new Vuex.Store({
       return state.themes.sort((themeA, themeB) => {
         return themeA.name > themeB.name
       })
+    },
+    getStrHeroes (state) {
+      return state.heroes.filter(hero => hero.characteristics.attribute == "Strength").sort(function (heroA, heroB){
+        if (heroA.hero < heroB.hero) {
+          return -1;
+        }
+        if (heroA.hero > heroB.hero)
+          return 1;
+      });
+    },
+    getAgiHeroes (state) {
+      return state.heroes.filter(hero => hero.characteristics.attribute == "Agility").sort(function (heroA, heroB){
+        if (heroA.hero < heroB.hero) {
+          return -1;
+        }
+        if (heroA.hero > heroB.hero)
+          return 1;
+      });
+    },
+    getIntHeroes (state) {
+       return state.heroes.filter(hero => hero.characteristics.attribute == "Intelligence").sort(function (heroA, heroB){
+         if (heroA.hero < heroB.hero) {
+           return -1;
+         }
+         if (heroA.hero > heroB.hero)
+           return 1;
+       });
     }
   }
 })
