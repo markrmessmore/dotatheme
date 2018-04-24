@@ -41,6 +41,19 @@
               </v-flex>
             </v-layout>
             <v-layout row>
+              <v-flex xs10 offset-xs1>
+                <v-text-field
+                  name="themeNotes"
+                  label="Theme Notes"
+                  id="themeNotes"
+                  v-model="themeNotes"
+                  placeholder="Make notes about the theme, certain hero cosmetics, etc."
+                  multi-line
+                >
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
               <v-flex xs12 sm3 offset-sm1>
                 <v-card>
                   <div  class="text-xs-center">
@@ -105,6 +118,7 @@ export default {
     return {
       themeName: "",
       themeDesc: "",
+      themeNotes: "",
       selectedHeroes: [],
       strHeroes: [],
       agiHeroes: [],
@@ -114,7 +128,15 @@ export default {
   created: function () {
     this.getHeroByAtt();
   },
+  watch: {
+    getThemes (value) {
+      this.$router.push('/')
+    }
+  },
   computed: {
+    getThemes () {
+      return this.$store.getters.getThemes
+    },
     validateTheme () {
       return this.themeName != "" && this.themeDesc !== "" && this.selectedHeroes.length >= 5
     }
@@ -134,7 +156,8 @@ export default {
       const themeInfo = {
         themeName: this.themeName,
         themDesc: this.themeDesc,
-        selectedHeroes: this.selectedHeroes
+        selectedHeroes: this.selectedHeroes,
+        themeNotes: this.themeNotes
       }
       this.$store.dispatch('createNewTheme', themeInfo);
     }

@@ -70,16 +70,19 @@
                   :items="getThemes"
                   class="elevation-5"
                   :search="search"
+                  :loading="getLoading"
                 >
+                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
-                    <v-alert :value="true" color="error" icon="warning">
-                      Sorry, we seem to be having trouble contacting the server :-(.
+                    <v-alert :value="true" color="info">
+                      Loading theme data...
                     </v-alert>
                   </template>
                   <template slot="items" slot-scope="props">
                     <tr class="data-table-row" @click="props.expanded = !props.expanded">
-                      <td class="title">{{props.item.name}}</td>
-                      <td class="title">{{props.item.description}}</td>
+                      <td class="subheading">{{props.item.name}}</td>
+                      <td class="body-2">{{props.item.description}}</td>
+                      <td class="subheading">{{props.item.heroes.length}} Heroes</td>
                     </tr>
                   </template>
                   <template slot="expand" slot-scope="props">
@@ -129,7 +132,6 @@
         </v-card>
       </v-flex>
     </v-layout>
-
   </v-container>
 </template>
 
@@ -145,7 +147,7 @@ export default {
         {
           text: "Theme Title",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "name"
         },
         {
@@ -153,6 +155,12 @@ export default {
           align: "left",
           sortable: false,
           value: "description"
+        },
+        {
+          text: "Number of Heroes",
+          align: "left",
+          sortable: true,
+          value: "heroNum"
         }
       ]
     }
@@ -163,8 +171,8 @@ export default {
     }
   },
   computed: {
-    clickRand () {
-
+    getLoading () {
+      return this.$store.getters.getLoading
     },
     getThemes () {
       this.$store.dispatch('sortThemeHeroes');
@@ -176,7 +184,6 @@ export default {
     getRandomTheme () {
       var themeList = this.$store.getters.getThemes;
       var randNum   = Math.floor(Math.random())
-      // console.log(randNum);
       var rand      = randNum * themeList.length;
       return themeList[rand];
     }
@@ -186,7 +193,7 @@ export default {
 </script>
 
 <style scoped>
-.data-table-row:nth-child(4n-3) {
+.data-table-row:nth-child(4n+3) {
   background: #3F51B5;
   color: white;
 }

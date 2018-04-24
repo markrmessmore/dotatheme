@@ -61,27 +61,30 @@ export const store = new Vuex.Store({
   },
   actions: {
     getThemes({commit}) {
+      commit('setLoading', true)
       firebase.database().ref('Themes').once('value')
       .then((data) => {
         const themeInfo = []
         const themeObj = data.val()
         for (let key in themeObj) {
           themeInfo.push({
-            id: themeObj[key].id,
+            id: key,
             name: themeObj[key].name,
             heroes: themeObj[key].heroes,
             description: themeObj[key].description,
             notes: themeObj[key].notes,
           })
-          console.log(themeInfo)
         }
+        commit('setLoading', false)
         commit('loadThemes', themeInfo);
       })
       .catch((error) => {
-
+        console.log(error)
+        commit('setLoading', false)
       })
     },
     getHeroes ({commit}){
+      commit('setLoading', true)
       firebase.database().ref('Heroes').once('value')
       .then((data) => {
         const heroInfo = [];
@@ -97,9 +100,11 @@ export const store = new Vuex.Store({
           })
         }
         commit('loadHeroes', heroInfo);
+        commit('setLoading', false)
       })
       .catch((error) => {
         console.log(error)
+        commit('setLoading', false)
       })
     },
     signOut ({commit}) {
@@ -133,7 +138,7 @@ export const store = new Vuex.Store({
         name: payload.themeName,
         description: payload.themDesc,
         heroes: payload.selectedHeroes,
-        notes: ""
+        notes: payload.themeNotes
       }
       firebase.database().ref('Themes').push(userTheme)
         .then((data) => {
@@ -159,7 +164,12 @@ export const store = new Vuex.Store({
     },
     getHeroes (state) {
       return state.heroes.sort((heroA, heroB) => {
-        return state.heroA > state.heroB
+        if (heroA.hero > heroB.hero) {
+          return 1
+        }
+        else {
+          return -1
+        }
       })
     },
     getThemes (state) {
