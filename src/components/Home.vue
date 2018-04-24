@@ -33,32 +33,67 @@
             <br>
             <v-layout row>
               <v-flex xs12 text-xs-center>
-                <!-- <v-btn large color="indigo" dark @click.native.stop="randomTheme = !randomTheme"> -->
-                <v-btn large color="indigo" dark @click.native="createRand">
+                <v-btn large color="indigo" dark @click.native.stop="getRandomTheme">
                   <v-icon left>fas fa-random</v-icon>
-                  <!-- {{randomNumber}} -->
                   Give A Random Theme
                 </v-btn>
-                <v-btn large color="indigo" dark>
+                <v-btn large color="indigo" dark @click.native.stop="getRandomMatchup">
                   <v-icon left>cached</v-icon>
                   Create Random Theme Matchup
                 </v-btn>
-                <v-dialog v-model="randomTheme" max-width="290">
+                <v-dialog v-model="randomTheme" max-width="500">
                   <v-card>
                     <v-toolbar color="indigo" class="white--text">
-                      <!-- <v-toolbar-title>{{getRandomTheme.name}}</v-toolbar-title> -->
+                      <v-toolbar-title>{{randThemeName}}</v-toolbar-title>
                     </v-toolbar>
-                    <!-- <v-card-title class="title">{{getRandomTheme.description}}</v-card-title> -->
+                    <v-card-title class="title">{{randThemeDesc}}</v-card-title>
                     <v-card-text>
-                      <!-- <li v-for="hero in getRandomTheme.heroes">{{hero}}</li> -->
+                      <li v-for="hero in randThemeHeroes">{{hero}}</li>
                     </v-card-text>
                   </v-card>
                 </v-dialog>
-                <v-dialog v-model="randomMatchup" max-width="290">
-                  <v-card>
-                    <v-card-title class="headline">Random Theme</v-card-title>
-                    <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-                  </v-card>
+                <v-dialog v-model="randomMatchup" max-width="500">
+                  <v-layout column>
+                    <v-flex xs12>
+                      <v-toolbar color="indigo" dark>
+                        <v-toolbar-title>
+                          {{matchupA.name}} vs. {{matchupB.name}}
+                        </v-toolbar-title>
+                      </v-toolbar>
+                    </v-flex>
+                    <v-card>
+                      <v-container fluid fill-height>
+                        <v-layout row wrap>
+                          <v-flex xs12>
+                            <v-card color="indigo" class="elevation-3 white--text">
+                              <v-container>
+                                <h6 class="title">{{matchupA.name}}</h6>
+                                <div>{{matchupA.description}}</div>
+                                <hr>
+                                <li v-for="(hero, index) in matchupA.heroes" :key="index" class="body-2">{{hero}}</li>
+                              </v-container>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card>
+                    <v-card>
+                      <v-container fluid fill-height>
+                        <v-layout row wrap>
+                          <v-flex xs12>
+                            <v-card color="secondary" class="elevation-3 white--text">
+                              <v-container>
+                                <h6 class="title">{{matchupB.name}}</h6>
+                                <div>{{matchupB.description}}</div>
+                                <hr>
+                                <li v-for="(hero, index) in matchupB.heroes" :key="index" class="body-2">{{hero}}</li>
+                              </v-container>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card>
+                  </v-layout>
                 </v-dialog>
               </v-flex>
             </v-layout>
@@ -71,6 +106,7 @@
                   class="elevation-5"
                   :search="search"
                   :loading="getLoading"
+                  :rows-per-page-items="rows"
                 >
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
@@ -103,7 +139,7 @@
                       </v-container>
                     </v-card>
                   </template>
-                  <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                  <v-alert slot="no-results" :value="true" color="info" icon="warning">
                     Your search for "{{ search }}" found no results.
                   </v-alert>
                 </v-data-table>
@@ -140,9 +176,15 @@ export default {
   data () {
     return {
       search: "",
+      rows: [10, 25, 50],
       randomNumber: 0,
       randomTheme: false,
       randomMatchup: false,
+      randThemeName: "",
+      randThemeDesc: "",
+      randThemeHeroes: [],
+      matchupA: {},
+      matchupB: {},
       headers: [
         {
           text: "Theme Title",
@@ -166,26 +208,43 @@ export default {
     }
   },
   methods: {
-    createRand () {
-      this.randomNumber = Math.random();
-    }
   },
   computed: {
-    getLoading () {
+    getRandomMatchup: function () {
+      var rand1 = Math.floor(Math.random() * this.getThemes.length)
+      var rand2 = Math.floor(Math.random() * this.getThemes.length)
+      while (rand1 == rand2) {
+        rand2 = Math.floor(Math.random() * this.getThemes.length)
+      }
+      this.randomMatchup = !this.randomMatchup
+      this.matchupA = {
+        name: this.getThemes[rand1].name.toUpperCase(),
+        description: this.getThemes[rand1].description,
+        heroes: this.getThemes[rand1].heroes,
+      },
+      this.matchupB = {
+        name: this.getThemes[rand2].name.toUpperCase(),
+        description: this.getThemes[rand2].description,
+        heroes: this.getThemes[rand2].heroes,
+      }
+
+    },
+    getRandomTheme: function () {
+      var randNum = Math.floor(Math.random() * this.getThemes.length)
+      this.randomTheme = !this.randomTheme
+      this.randThemeName = this.getThemes[randNum].name
+      this.randThemeDesc = this.getThemes[randNum].description
+      this.randThemeHeroes = this.getThemes[randNum].heroes
+    },
+    getLoading: function () {
       return this.$store.getters.getLoading
     },
-    getThemes () {
+    getThemes: function () {
       this.$store.dispatch('sortThemeHeroes');
       return this.$store.getters.getThemes
     },
-    numberThemes () {
+    numberThemes: function () {
       return this.$store.getters.getThemes.length
-    },
-    getRandomTheme () {
-      var themeList = this.$store.getters.getThemes;
-      var randNum   = Math.floor(Math.random())
-      var rand      = randNum * themeList.length;
-      return themeList[rand];
     }
   }
 }

@@ -11,19 +11,6 @@ export const store = new Vuex.Store({
     error: null,
     heroes: [],
     themes: []
-    //   {
-    //     name: "Ice Heroes",
-    //     heroes: ["Ancient Apparition", "Crystal Maiden", "Drow Ranger", "Invoker", "Jakiro", "Lich", "Tusk", "Winter Wyvern"],
-    //     description: "Heroes with ice as a primary visual theme",
-    //     notes: "Won on 12/1. Lost bad on 12/2."
-    //   },
-    //   {
-    //     name: "Hurt from Below",
-    //     heroes: [ "Lion", "Earthshaker", "Leshrac", "Nyx Assassin", "Sand King", "Slardar", "Tidehunter"],
-    //     description: "Heroes with abilities bursting from the ground",
-    //     notes: ""
-    //   }
-    // ]
   },
   mutations: {
     setLoading (state, payload) {

@@ -102,7 +102,12 @@
             <v-layout>
               <v-flex xs8 offset-xs2 class="text-xs-center">
                 <v-btn large class="indigo white--text" @click="clearForm">Reset Form</v-btn>
-                <v-btn large class="indigo white--text" @click="submitTheme" :disabled="!validateTheme">Create Theme</v-btn>
+                <v-btn large class="indigo white--text" @click="submitTheme" :disabled="!validateTheme" :loading="loading">
+                  Create Theme
+                  <span slot="loader" class="custom-loader">
+                    <v-icon dark>cached</v-icon>
+                  </span>
+                </v-btn>
               </v-flex>
             </v-layout>
           </form>
@@ -139,6 +144,9 @@ export default {
     },
     validateTheme () {
       return this.themeName != "" && this.themeDesc !== "" && this.selectedHeroes.length >= 5
+    },
+    loading () {
+      return this.$store.getters.getLoading
     }
   },
   methods: {
@@ -166,4 +174,40 @@ export default {
 </script>
 
 <style lang="css">
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
