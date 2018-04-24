@@ -46,11 +46,11 @@
                 <v-dialog v-model="randomTheme" max-width="290">
                   <v-card>
                     <v-toolbar color="indigo" class="white--text">
-                      <v-toolbar-title>{{getRandomTheme.name}}</v-toolbar-title>
+                      <!-- <v-toolbar-title>{{getRandomTheme.name}}</v-toolbar-title> -->
                     </v-toolbar>
-                    <v-card-title class="title">{{getRandomTheme.description}}</v-card-title>
+                    <!-- <v-card-title class="title">{{getRandomTheme.description}}</v-card-title> -->
                     <v-card-text>
-                      <li v-for="hero in getRandomTheme.heroes">{{hero}}</li>
+                      <!-- <li v-for="hero in getRandomTheme.heroes">{{hero}}</li> -->
                     </v-card-text>
                   </v-card>
                 </v-dialog>
@@ -68,7 +68,6 @@
                 <v-data-table
                   :headers="headers"
                   :items="getThemes"
-                  item-key="name"
                   class="elevation-5"
                   :search="search"
                 >
@@ -95,7 +94,7 @@
                           <v-flex xs6 offset-xs1>
                             <b class="title">Heroes</b>:
                             <hr>
-                            <li v-for="hero in props.item.heroes">{{ hero }}</li>
+                            <li v-for="(hero, index) in props.item.heroes" :key="index">{{ hero }}</li>
                           </v-flex>
                         </v-layout>
                       </v-container>

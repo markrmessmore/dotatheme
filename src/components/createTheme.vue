@@ -61,7 +61,7 @@
                   </div>
                   <br>
                   <hr>
-                  <v-checkbox v-for="hero in agiHeros" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes">
+                  <v-checkbox v-for="hero in agiHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes">
                   </v-checkbox>
                 </v-card>
               </v-flex>
@@ -111,9 +111,6 @@ export default {
       intHeroes: []
     }
   },
-  beforeMount: function () {
-
-  },
   created: function () {
     this.getHeroByAtt();
   },
@@ -125,7 +122,7 @@ export default {
   methods: {
     getHeroByAtt () {
       this.strHeroes  = this.$store.getters.getStrHeroes;
-      this.agiHeros   = this.$store.getters.getAgiHeroes;
+      this.agiHeroes   = this.$store.getters.getAgiHeroes;
       this.intHeroes  = this.$store.getters.getIntHeroes;
     },
     clearForm () {

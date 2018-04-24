@@ -26,7 +26,7 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-          DotaThemes.com
+          DotaTheme.com
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -79,17 +79,17 @@ export default {
           {
             title: "Manage Themes",
             icon: "view_list",
-            link: "/themes"
+            link: "/editThemes"
           },
           {
             title: "Manage Heroes",
             icon: "people_outline",
-            link: "/heroes"
+            link: "/editHeroes"
           },
           {
             title: "Sign Out",
             icon: "play_for_work",
-            link: ""
+            link: "/signOut"
           }
         ]
       }

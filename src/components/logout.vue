@@ -1,11 +1,13 @@
 <template lang="html">
-  <div class="">
-    Themes
-  </div>
+
 </template>
 
 <script>
 export default {
+  created: function () {
+    this.$store.dispatch('signOut')
+    this.$router.push('/')
+  }
 }
 </script>
 

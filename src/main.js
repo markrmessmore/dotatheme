@@ -5,7 +5,9 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import * as firebase from "./firebase.js"
 import {store} from './store/vuex.js'
+import Alert from "./components/alert.vue"
 
+Vue.component('app-alert', Alert)
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
@@ -21,5 +23,9 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    this.$store.dispatch('getHeroes')
+    this.$store.dispatch('getThemes')
+  }
 })

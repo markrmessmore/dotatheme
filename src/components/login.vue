@@ -2,7 +2,7 @@
   <v-container>
     <v-layout row v-if="error">
       <v-flex xs12 sm6 offset-sm3>
-        <page-error @dismissed="onDismissed" :errMsg="error.message"></page-error>
+        <app-alert @dismissed="onDismissed" :text="error"></app-alert>
       </v-flex>
     </v-layout>
     <v-layout row>
@@ -43,7 +43,7 @@
                     <v-btn type="submit" @click="login" :disabled="loading" :loading="loading">
                       Login
                       <span slot="loader" class="custom-loader">
-                        <v-icon light>cached</v-icon>
+                        <v-icon dark>cached</v-icon>
                       </span>
                     </v-btn>
                   </v-flex>
@@ -65,23 +65,22 @@ export default {
       password: ""
     }
   },
-  computed: {
-    user () {
-      return this.$store.getters.user
-    },
-    error () {
-      // return this.$store.getters.getErrors
-    },
-    loading (){
-      // return this.$store.getters.getLoading
-    }
-  },
   watch: {
     user (value) {
       if (value !== null && value !== undefined) {
         this.$router.push('/')
-        console.log("Logged In.")
       }
+    }
+  },
+  computed: {
+    user () {
+      return this.$store.getters.getUser
+    },
+    error () {
+      return this.$store.getters.getErrors
+    },
+    loading () {
+      return this.$store.getters.getLoading
     }
   },
   methods: {
@@ -89,8 +88,46 @@ export default {
       this.$store.dispatch('signIn', {email: this.email, password: this.password})
     },
     onDismissed(){
-      // this.$store.dispatch('clearError')
+      this.$store.dispatch('clearError')
     }
   }
 }
 </script>
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
