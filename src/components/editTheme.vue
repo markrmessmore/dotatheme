@@ -62,7 +62,7 @@
                   </div>
                   <br>
                   <hr>
-                  <v-checkbox v-for="hero in strHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes"></v-checkbox>
+                  <v-checkbox v-for="(hero, index) in strHeroes" :key="hero.index" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes"></v-checkbox>
                 </v-card>
               </v-flex>
               <v-flex xs12 sm4>
@@ -137,7 +137,7 @@ export default {
     getThemes (value) {
       this.$router.push('/')
     }
-},
+  },
   computed: {
     validateTheme () {
       return this.themeName != "" && this.themeDesc !== "" && this.selectedHeroes.length >= 5
@@ -156,13 +156,14 @@ export default {
       this.intHeroes  = this.$store.getters.getIntHeroes;
     },
     updateTheme () {
-      const themeInfo = {
-        themeName: this.themeName,
-        themDesc: this.themeDesc,
-        selectedHeroes: this.selectedHeroes,
-        themeNotes: this.themeNotes
+      const editedTheme = {
+          themeName: this.themeName,
+          themeDesc: this.themeDesc,
+          selectedHeroes: this.selectedHeroes,
+          themeNotes: this.themeNotes,
+          themeId: this.id
       }
-      this.$store.dispatch('updateTheme', themeInfo, this.id);
+      this.$store.dispatch('updateTheme', editedTheme)
     }
   }
 }

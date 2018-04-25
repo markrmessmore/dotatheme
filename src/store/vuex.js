@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import router from '../router'
 
 Vue.use(Vuex);
 
@@ -47,7 +48,7 @@ export const store = new Vuex.Store({
     },
     updateTheme (state, payload) {
       const theme = state.themes.find(theme => {
-        return theme.id === payload.id
+        return theme.id === payload.themeId
       })
       theme.name = payload.themeName
       theme.description = payload.themeDesc
@@ -79,16 +80,23 @@ export const store = new Vuex.Store({
         commit('setLoading', false)
       })
     },
-    updateTheme({commit}, payload, id) {
+    updateTheme({commit}, payload) {
       commit('setLoading', true)
-      firebase.database().ref('Heroes').child(id).update(payload)
-      .then((response) => {
+      const updatedTheme = {
+        name: payload.themeName,
+        description: payload.themeDesc,
+        heroes: payload.selectedHeroes,
+        notes: payload.themeNotes
+      }
+      firebase.database().ref('Themes').child(payload.themeId).update(updatedTheme)
+      .then(() => {
         commit('setLoading', false)
         commit('updateTheme', payload)
+        router.push('/')
       })
       .catch((error) => {
         commit('setLoading', false)
-        console.log(error)
+        console.log("There was an error: " + error)
       })
     },
     getHeroes ({commit}){

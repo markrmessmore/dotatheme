@@ -10,7 +10,6 @@
             :rows-per-page-items="rows"
             :loading="getLoading"
             :search="search"
-            item-key="id"
           >
             <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="no-data">
@@ -20,8 +19,8 @@
             </template>
             <template slot="items" slot-scope="props" class="data-row">
               <tr class="data-row">
-                <td class="subheading">{{props.item.name}}</td>
-                <td class="subheading">{{props.item.description}}</td>
+                <td class="subheading" :key="props.item.id + '-name'">{{props.item.name}}</td>
+                <td class="subheading" :key="props.item.id + '-desc'">{{props.item.description}}</td>
                 <td>
                   <v-btn small color="black" dark @click.native.stop="editTheme(props.item)">
                     <v-icon left>edit</v-icon>
@@ -29,7 +28,7 @@
                   </v-btn>
                 </td>
                 <td>
-                  <v-btn small color="red darken-4" dark @click.native.stop="">
+                  <v-btn small color="red darken-4" dark @click.native.stop="notYet">
                     <v-icon left>delete_forever</v-icon>
                     Delete
                   </v-btn>
@@ -79,6 +78,9 @@ export default {
   methods: {
     editTheme(theme) {
       this.$router.push({name: 'editTheme', params: {id: theme.id, themeName: theme.name, themeDesc: theme.description, selectedHeroes: theme.heroes, themeNotes: theme.notes}})
+    },
+    notYet() {
+      alert("Sorry that button isn't quite done yet. Check with Mark (Elihu) if you need something deleted.")
     }
   },
   computed: {

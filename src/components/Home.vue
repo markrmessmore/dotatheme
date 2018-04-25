@@ -6,7 +6,7 @@
           <v-container>
             <v-layout row>
               <v-flex xs12>
-                <v-card color="secondary" dark>
+                <v-card color="secondary" dark class="elevation-5">
                   <v-card-text>
                     <h3 class="display-1 text-xs-center">Welcome to DotaTheme.com</h3>
                   </v-card-text>
@@ -147,7 +147,7 @@
                   <v-flex xs6 offset-xs6>
                     <v-text-field
                        append-icon="search"
-                       label="Search"
+                       label="Search for theme titles or descriptions..."
                        single-line
                        hide-details
                        v-model="search"
