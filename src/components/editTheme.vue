@@ -62,8 +62,7 @@
                   </div>
                   <br>
                   <hr>
-                  <v-checkbox v-for="hero in strHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes">
-                  </v-checkbox>
+                  <v-checkbox v-for="hero in strHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes"></v-checkbox>
                 </v-card>
               </v-flex>
               <v-flex xs12 sm4>
@@ -74,8 +73,7 @@
                   </div>
                   <br>
                   <hr>
-                  <v-checkbox v-for="hero in agiHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes">
-                  </v-checkbox>
+                  <v-checkbox v-for="hero in agiHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes"></v-checkbox>
                 </v-card>
               </v-flex>
               <v-flex xs12 sm3>
@@ -86,8 +84,7 @@
                   </div>
                   <br>
                   <hr>
-                  <v-checkbox v-for="hero in intHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes">
-                  </v-checkbox>
+                  <v-checkbox v-for="hero in intHeroes" :key="hero.hero" :label="hero.hero" :value="hero.hero" v-model="selectedHeroes"></v-checkbox>
                 </v-card>
               </v-flex>
             </v-layout>
@@ -101,9 +98,9 @@
             </v-container>
             <v-layout>
               <v-flex xs8 offset-xs2 class="text-xs-center">
-                <v-btn large class="indigo white--text" @click="clearForm">Reset Form</v-btn>
-                <v-btn large class="indigo white--text" @click="submitTheme" :disabled="!validateTheme" :loading="loading">
-                  Create Theme
+                <v-btn large class="red darken-4 white--text" router-link :to="{path: '/manageThemes'}">Cancel Changes</v-btn>
+                <v-btn large class="indigo white--text" @click="updateTheme" :disabled="!validateTheme" :loading="loading">
+                  Update Theme
                   <span slot="loader" class="custom-loader">
                     <v-icon dark>cached</v-icon>
                   </span>
@@ -119,12 +116,15 @@
 
 <script>
 export default {
+  props: {
+    id: "",
+    themeName: "",
+    themeDesc: "",
+    themeNotes: "",
+    selectedHeroes: []
+  },
   data() {
     return {
-      themeName: "",
-      themeDesc: "",
-      themeNotes: "",
-      selectedHeroes: [],
       strHeroes: [],
       agiHeroes: [],
       intHeroes: []
@@ -137,16 +137,16 @@ export default {
     getThemes (value) {
       this.$router.push('/')
     }
-  },
+},
   computed: {
-    getThemes () {
-      return this.$store.getters.getThemes
-    },
     validateTheme () {
       return this.themeName != "" && this.themeDesc !== "" && this.selectedHeroes.length >= 5
     },
     loading () {
       return this.$store.getters.getLoading
+    },
+    getThemes () {
+      return this.$store.getters.getThemes
     }
   },
   methods: {
@@ -155,11 +155,6 @@ export default {
       this.agiHeroes   = this.$store.getters.getAgiHeroes;
       this.intHeroes  = this.$store.getters.getIntHeroes;
     },
-    clearForm () {
-      this.themeName = '',
-      this.themeDesc = '',
-      this.selectedHeroes = null
-    },
     updateTheme () {
       const themeInfo = {
         themeName: this.themeName,
@@ -167,7 +162,7 @@ export default {
         selectedHeroes: this.selectedHeroes,
         themeNotes: this.themeNotes
       }
-      this.$store.dispatch('updateTheme', themeInfo);
+      this.$store.dispatch('updateTheme', themeInfo, this.id);
     }
   }
 }

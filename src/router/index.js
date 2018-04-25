@@ -5,7 +5,9 @@ import createTheme from '@/components/createTheme'
 import login from '@/components/login'
 import logout from '@/components/logout'
 import editHeroes from '@/components/editHeroes'
-import editThemes from '@/components/editThemes'
+import editTheme from '@/components/editTheme'
+import manageThemes from '@/components/manageThemes'
+import AuthGuard from './authguard.js'
 
 Vue.use(Router)
 
@@ -31,11 +33,22 @@ export default new Router({
     },
     {
       path: '/editHeroes',
-      component: editHeroes
+      name: 'editHeroes',
+      component: editHeroes,
+      beforeEnter: AuthGuard
     },
     {
-      path: '/editThemes',
-      component: editThemes
+      path: '/editTheme/:id',
+      component: editTheme,
+      name: 'editTheme',
+      beforeEnter: AuthGuard,
+      props: true
+    },
+    {
+      path: '/manageThemes',
+      component: manageThemes,
+      props: true,
+      beforeEnter: AuthGuard
     }
   ]
 })

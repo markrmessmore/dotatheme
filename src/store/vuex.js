@@ -44,6 +44,15 @@ export const store = new Vuex.Store({
     },
     createNewTheme (state, payload) {
       state.themes.push(payload)
+    },
+    updateTheme (state, payload) {
+      const theme = state.themes.find(theme => {
+        return theme.id === payload.id
+      })
+      theme.name = payload.themeName
+      theme.description = payload.themeDesc
+      theme.notes = payload.themeNotes
+      theme.heroes = payload.selectedHeroes
     }
   },
   actions: {
@@ -68,6 +77,18 @@ export const store = new Vuex.Store({
       .catch((error) => {
         console.log(error)
         commit('setLoading', false)
+      })
+    },
+    updateTheme({commit}, payload, id) {
+      commit('setLoading', true)
+      firebase.database().ref('Heroes').child(id).update(payload)
+      .then((response) => {
+        commit('setLoading', false)
+        commit('updateTheme', payload)
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        console.log(error)
       })
     },
     getHeroes ({commit}){
@@ -96,6 +117,7 @@ export const store = new Vuex.Store({
     },
     signOut ({commit}) {
       commit('signOut')
+      firebase.auth().signOut()
     },
     signIn ({commit}, payload) {
       commit('setLoading', true)
@@ -116,6 +138,9 @@ export const store = new Vuex.Store({
           commit('setError', error.message)
         }
       )
+    },
+    autoSignIn ({commit}, payload) {
+      commit('setUser', {id: payload.uid})
     },
     sortThemeHeroes(context){
       context.commit('sortThemeHeroes')

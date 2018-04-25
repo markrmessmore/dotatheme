@@ -79,13 +79,13 @@ export default {
           {
             title: "Manage Themes",
             icon: "view_list",
-            link: "/editThemes"
+            link: "/manageThemes"
           },
-          {
-            title: "Manage Heroes",
-            icon: "people_outline",
-            link: "/editHeroes"
-          },
+          // {
+          //   title: "Manage Heroes",
+          //   icon: "people_outline",
+          //   link: "/editHeroes"
+          // },
           {
             title: "Sign Out",
             icon: "play_for_work",

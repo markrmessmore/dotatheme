@@ -3,12 +3,14 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import * as firebase from "./firebase.js"
+import {config} from "./firebase.js"
 import {store} from './store/vuex.js'
 import Alert from "./components/alert.vue"
+import * as firebase from 'firebase'
 
 Vue.component('app-alert', Alert)
 Vue.use(Vuetify)
+Vue.use(firebase)
 
 Vue.config.productionTip = false
 
@@ -25,7 +27,13 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    this.$store.dispatch('getHeroes')
+    firebase.initializeApp(config)
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+      }
+    })
+    this.$store.dispatch('getHeroes'),
     this.$store.dispatch('getThemes')
   }
 })
