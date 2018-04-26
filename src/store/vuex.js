@@ -54,6 +54,10 @@ export const store = new Vuex.Store({
       theme.description = payload.themeDesc
       theme.notes = payload.themeNotes
       theme.heroes = payload.selectedHeroes
+    },
+    deleteTheme (state, payload){
+      console.log("Removing from local state.")
+      state.themes.splice(state.themes.indexOf(payload), 1)
     }
   },
   actions: {
@@ -167,6 +171,21 @@ export const store = new Vuex.Store({
         .catch((error) => {
           console.log(error)
         })
+    },
+    deleteTheme({commit}, payload){
+      console.log(payload)
+      commit('setLoading', true)
+      firebase.database().ref('Themes').child(payload).remove()
+      .then(() => {
+        console.log(`Theme ID: ${payload} deleted`)
+        commit('setLoading', false)
+        commit('deleteTheme', payload)
+        location.replace('/')
+      })
+      .catch((error) => {
+        commit('setLoading', false)
+        console.log("There was an error: " + error)
+      })
     },
     clearError({commit}) {
       commit('clearError')

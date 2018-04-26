@@ -26,6 +26,7 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
+          <img src="./assets/logo-white.png" height="15px" width="15px">
           DotaTheme.com
         </router-link>
       </v-toolbar-title>
@@ -39,12 +40,8 @@
     </v-toolbar>
   <!-- CONTAINER -->
     <main>
-      <!-- <v-container> -->
         <router-view></router-view>
-      <!-- </v-container> -->
     </main>
-
-
   </v-app>
 </template>
 

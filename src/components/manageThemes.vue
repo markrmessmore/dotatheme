@@ -28,10 +28,18 @@
                   </v-btn>
                 </td>
                 <td>
-                  <v-btn small color="red darken-4" dark @click.native.stop="notYet">
-                    <v-icon left>delete_forever</v-icon>
-                    Delete
-                  </v-btn>
+                  <template v-if="true">
+                    <appDialog
+                      :theme="props.item"
+                      barColor="red darken-4 white--text"
+                      title="HOLD UP A SEC..."
+                      msg="Are you <b>SURE</b> you want to delete this theme? It will be gone for good if you click yes." btn1Msg="Oops. Cancel!"
+                      btn1Color="red darken-4 white--text"
+                      btn2Msg="Yep. Let it be gone!"
+                      btn2Color="red darken-4 white--text"
+                    >
+                    </appDialog>
+                  </template>
                 </td>
               </tr>
             </template>
@@ -79,8 +87,8 @@ export default {
     editTheme(theme) {
       this.$router.push({name: 'editTheme', params: {id: theme.id, themeName: theme.name, themeDesc: theme.description, selectedHeroes: theme.heroes, themeNotes: theme.notes}})
     },
-    notYet() {
-      alert("Sorry that button isn't quite done yet. Check with Mark (Elihu) if you need something deleted.")
+    deleteTheme() {
+      this.dialog = true;
     }
   },
   computed: {

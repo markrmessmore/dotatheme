@@ -135,7 +135,7 @@ export default {
   },
   watch: {
     getThemes (value) {
-      console.log(value)
+      location.replace('/')
     }
   },
   computed: {

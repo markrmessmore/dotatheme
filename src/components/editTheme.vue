@@ -135,7 +135,7 @@ export default {
   },
   watch: {
     getThemes (value) {
-      this.$router.push('/')
+      location.replace('/')
     }
   },
   computed: {

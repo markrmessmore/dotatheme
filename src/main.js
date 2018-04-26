@@ -7,7 +7,9 @@ import {config} from "./firebase.js"
 import {store} from './store/vuex.js'
 import Alert from "./components/alert.vue"
 import * as firebase from 'firebase'
+import appDialog from './components/appDialog.vue'
 
+Vue.component('appDialog', appDialog)
 Vue.component('app-alert', Alert)
 Vue.use(Vuetify)
 Vue.use(firebase)
