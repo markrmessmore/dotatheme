@@ -134,7 +134,7 @@ export default {
     this.getHeroByAtt();
   },
   watch: {
-    getThemes (value) {
+    getThemes () {
       location.replace('/')
     }
   },

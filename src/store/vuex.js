@@ -56,7 +56,6 @@ export const store = new Vuex.Store({
       theme.heroes = payload.selectedHeroes
     },
     deleteTheme (state, payload){
-      console.log("Removing from local state.")
       state.themes.splice(state.themes.indexOf(payload), 1)
     }
   },
@@ -173,11 +172,9 @@ export const store = new Vuex.Store({
         })
     },
     deleteTheme({commit}, payload){
-      console.log(payload)
       commit('setLoading', true)
       firebase.database().ref('Themes').child(payload).remove()
       .then(() => {
-        console.log(`Theme ID: ${payload} deleted`)
         commit('setLoading', false)
         commit('deleteTheme', payload)
         location.replace('/')
