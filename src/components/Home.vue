@@ -6,6 +6,17 @@
           <v-container>
             <v-layout row>
               <v-flex xs12>
+                <v-alert type="info" :value="true" class="text-xs-center">
+                  <a href="https://docs.google.com/spreadsheets/d/1ts2x4eZW45JDee47MeQ3ZgsomYYZWdBJDAPD8WznzLw/edit?usp=sharing" target="_blank" class="white--text">
+                    Click here to go to the old themes spreadsheet.
+                    <br>
+                    This link will be active until we get everything switched over.
+                  </a>
+                </v-alert>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs12>
                 <v-card color="secondary" dark class="elevation-5">
                   <v-card-text>
                     <h3 class="display-1 text-xs-center">Welcome to DotaTheme.com</h3>
