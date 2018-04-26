@@ -168,14 +168,6 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <template>
-            <v-footer class="pa-3">
-              <v-spacer></v-spacer>
-              <div class="title">Currently serving {{numberThemes}} different wacky themes to choose from!</div>
-              <v-spacer></v-spacer>
-              <div>&copy; {{ new Date().getFullYear() }}</div>
-            </v-footer>
-          </template>
         </v-card>
       </v-flex>
     </v-layout>
