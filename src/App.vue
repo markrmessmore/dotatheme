@@ -64,6 +64,11 @@ export default {
           link: "/createTheme"
         },
         {
+          title: "About",
+          icon: "fas fa-info-circle",
+          link: "/about"
+        },
+        {
           title: "Admin Login",
           icon: "perm_identity",
           link: "/login"

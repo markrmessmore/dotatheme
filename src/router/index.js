@@ -8,6 +8,7 @@ import editHeroes from '@/components/editHeroes'
 import editTheme from '@/components/editTheme'
 import manageThemes from '@/components/manageThemes'
 import AuthGuard from './authguard.js'
+import about from '@/components/about'
 
 Vue.use(Router)
 
@@ -18,6 +19,10 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/about',
+      component: about
     },
     {
       path: '/login',
