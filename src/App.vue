@@ -71,6 +71,11 @@ export default {
           icon: "create",
           link: "/createTheme"
         },
+        // {
+        //   title: "Advanced Search",
+        //   icon: "fas fa-search-plus",
+        //   link: "/search"
+        // },
         {
           title: "About",
           icon: "fas fa-info-circle",
@@ -89,16 +94,16 @@ export default {
             icon: "create",
             link: "/createTheme"
           },
+          // {
+          //   title: "Advanced Search",
+          //   icon: "fas fa-search-plus",
+          //   link: "/search"
+          // },
           {
             title: "Manage Themes",
             icon: "view_list",
             link: "/manageThemes"
           },
-          // {
-          //   title: "Manage Heroes",
-          //   icon: "people_outline",
-          //   link: "/editHeroes"
-          // },
           {
             title: "Sign Out",
             icon: "play_for_work",

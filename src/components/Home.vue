@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 sm10 offset-sm1>
         <v-card class="elevation-5">
           <v-container>
             <v-layout row>
@@ -139,7 +139,7 @@
                           <v-flex xs5>
                             <b class="title">Notes</b>:
                             <hr>
-                            {{props.item.notes}}
+                            <li v-for="(note, index) in fixNotes(props.item.notes)" :key="index">{{note}}</li>
                           </v-flex>
                           <v-flex xs6 offset-xs1>
                             <b class="title">Heroes</b>:
@@ -158,7 +158,7 @@
                   <v-flex xs6 offset-xs6>
                     <v-text-field
                        append-icon="search"
-                       label="Search for theme titles or descriptions..."
+                       label="Quick search..."
                        single-line
                        hide-details
                        v-model="search"
@@ -211,6 +211,14 @@ export default {
     }
   },
   methods: {
+    fixNotes (themeNotes) {
+      if (themeNotes) {
+        return themeNotes.split("\n")
+      }
+      else {
+        return null
+      }
+    }
   },
   computed: {
     getRandomMatchup: function () {
@@ -244,6 +252,7 @@ export default {
     },
     getThemes: function () {
       this.$store.dispatch('sortThemeHeroes');
+      var dislist = this.$store.getters.getThemes
       return this.$store.getters.getThemes
     },
     numberThemes: function () {

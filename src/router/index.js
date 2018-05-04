@@ -9,6 +9,8 @@ import editTheme from '@/components/editTheme'
 import manageThemes from '@/components/manageThemes'
 import AuthGuard from './authguard.js'
 import about from '@/components/about'
+import search from '@/components/search'
+import errorPage from '@/components/notFound'
 
 Vue.use(Router)
 
@@ -23,6 +25,10 @@ export default new Router({
     {
       path: '/about',
       component: about
+    },
+    {
+      path: '/search',
+      component: search
     },
     {
       path: '/login',
@@ -54,6 +60,10 @@ export default new Router({
       component: manageThemes,
       props: true,
       beforeEnter: AuthGuard
+    },
+    {
+      path: '*',
+      component: errorPage
     }
   ]
 })

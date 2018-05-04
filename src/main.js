@@ -9,6 +9,9 @@ import Alert from "./components/alert.vue"
 import * as firebase from 'firebase'
 import appDialog from './components/appDialog.vue'
 
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect)
+
 Vue.component('appDialog', appDialog)
 Vue.component('app-alert', Alert)
 Vue.use(Vuetify)
