@@ -241,7 +241,6 @@ export default {
     },
     getThemes: function () {
       this.$store.dispatch('sortThemeHeroes');
-      var dislist = this.$store.getters.getThemes
       return this.$store.getters.getThemes
     },
     numberThemes: function () {

@@ -15,6 +15,23 @@
           </v-layout>
           <form>
             <v-layout row>
+              <v-flex xs3 offset-xs8>
+                <v-card>
+                  <v-toolbar dense>
+                    <v-toolbar-title>
+                      <h3 class="title">Theme Approved?</h3>
+                    </v-toolbar-title>
+                  </v-toolbar>
+                  <v-card-text>
+                    <v-radio-group v-model="approved" row>
+                      <v-radio label="Yes" value="true" color="indigo"></v-radio>
+                      <v-radio label="No" value="false" color="red darken-3"></v-radio>
+                    </v-radio-group>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
               <v-flex xs10 offset-xs1>
                 <v-text-field
                   name="themeName"
@@ -53,6 +70,7 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
+            <br>
             <v-layout row>
               <v-flex xs12 sm3 offset-sm1>
                 <v-card>
@@ -118,6 +136,7 @@
 export default {
   props: {
     id: "",
+    approved: "",
     themeName: "",
     themeDesc: "",
     themeNotes: "",
@@ -161,9 +180,18 @@ export default {
           themeDesc: this.themeDesc,
           selectedHeroes: this.selectedHeroes,
           themeNotes: this.themeNotes,
-          themeId: this.id
+          themeId: this.id,
+          themeApproved: this.approved
       }
       this.$store.dispatch('updateTheme', editedTheme)
+    },
+    switchColor() {
+      if (fixApproved == true) {
+        return green
+      }
+      else {
+        return red
+      }
     }
   }
 }

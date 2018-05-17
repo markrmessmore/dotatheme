@@ -114,6 +114,26 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <template>
+      <v-dialog persistent max-width="500" v-model="dialog">
+        <v-card>
+          <v-toolbar color="indigo" dark>
+            <v-toolbar-title>Just so you know...</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-container>
+              <h6 class="subheading">To assist in the integrity of our database and community all newly submitted themes are personally reviewed by DotaTheme admins.
+              <br>
+              <br>
+              If you have questions contact us in <a href="https://discord.gg/0h2DOuBCUWs9XHZp" target="_blank">Discord</a>.</h6>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="text-xs-right">
+            <v-btn color="primary" flat @click.stop="dialog=false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
   </v-container>
 </template>
 
@@ -121,6 +141,7 @@
 export default {
   data() {
     return {
+      dialog: true,
       themeName: "",
       themeDesc: "",
       themeNotes: "",
@@ -165,7 +186,8 @@ export default {
         themeName: this.themeName,
         themDesc: this.themeDesc,
         selectedHeroes: this.selectedHeroes,
-        themeNotes: this.themeNotes
+        themeNotes: this.themeNotes,
+        themeApproved: "false"
       }
       this.$store.dispatch('createNewTheme', themeInfo);
     }

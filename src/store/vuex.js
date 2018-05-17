@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import * as emailConfig from '../email.js'
 import router from '../router'
+import axios from 'axios'
 
 Vue.use(Vuex);
 
@@ -48,12 +50,13 @@ export const store = new Vuex.Store({
     },
     updateTheme (state, payload) {
       const theme = state.themes.find(theme => {
-        return theme.id === payload.themeId
+        return theme.id === payload.id
       })
-      theme.name = payload.themeName
-      theme.description = payload.themeDesc
-      theme.notes = payload.themeNotes
-      theme.heroes = payload.selectedHeroes
+      theme.name        = payload.name
+      theme.description = payload.description
+      theme.notes       = payload.notes
+      theme.heroes      = payload.heroes
+      theme.approved    = payload.approved
     },
     deleteTheme (state, payload){
       state.themes.splice(state.themes.indexOf(payload), 1)
@@ -73,6 +76,7 @@ export const store = new Vuex.Store({
             heroes: themeObj[key].heroes,
             description: themeObj[key].description,
             notes: themeObj[key].notes,
+            approved: themeObj[key].approved
           })
         }
         commit('setLoading', false)
@@ -84,18 +88,21 @@ export const store = new Vuex.Store({
       })
     },
     updateTheme({commit}, payload) {
+      (payload.themeApproved)
       commit('setLoading', true)
       const updatedTheme = {
         name: payload.themeName,
         description: payload.themeDesc,
         heroes: payload.selectedHeroes,
-        notes: payload.themeNotes
+        notes: payload.themeNotes,
+        approved: payload.themeApproved,
+        id: payload.themeId
       }
       firebase.database().ref('Themes').child(payload.themeId).update(updatedTheme)
       .then(() => {
         commit('setLoading', false)
-        commit('updateTheme', payload)
-        router.push('/')
+        commit('updateTheme', updatedTheme)
+        router.push('/manageThemes')
       })
       .catch((error) => {
         commit('setLoading', false)
@@ -161,7 +168,8 @@ export const store = new Vuex.Store({
         name: payload.themeName,
         description: payload.themDesc,
         heroes: payload.selectedHeroes,
-        notes: payload.themeNotes
+        notes: payload.themeNotes,
+        approved: payload.themeApproved
       }
       firebase.database().ref('Themes').push(userTheme)
         .then((data) => {
@@ -177,7 +185,7 @@ export const store = new Vuex.Store({
       .then(() => {
         commit('setLoading', false)
         commit('deleteTheme', payload)
-        location.replace('/')
+        location.replace('/manageThemes')
       })
       .catch((error) => {
         commit('setLoading', false)
@@ -208,8 +216,11 @@ export const store = new Vuex.Store({
         }
       })
     },
+    getThemesToApprove(state) {
+      return state.themes.filter(theme => theme.approved == "false")
+    },
     getThemes (state) {
-      return state.themes.sort((themeA, themeB) => {
+      return state.themes.filter(theme => theme.approved != "false").sort((themeA, themeB) => {
         return themeA.name > themeB.name
       })
     },

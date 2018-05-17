@@ -61,6 +61,9 @@ export default {
     }
   },
   computed: {
+    pendingApprovals: function () {
+      return this.$store.getters.getThemesToApprove.length
+    },
     numberThemes: function () {
       return this.$store.getters.getThemes.length
     },
