@@ -97,11 +97,11 @@ export default {
             icon: "create",
             link: "/createTheme"
           },
-          // {
-          //   title: "Advanced Search",
-          //   icon: "fas fa-search-plus",
-          //   link: "/search"
-          // },
+          {
+            title: "Advanced Search",
+            icon: "fas fa-search-plus",
+            link: "/search"
+          },
           {
             title: "Manage Themes",
             icon: "view_list",

@@ -11,6 +11,7 @@ import AuthGuard from './authguard.js'
 import about from '@/components/about'
 import search from '@/components/search'
 import errorPage from '@/components/notFound'
+import searchResults from '@/components/searchResults'
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ export default new Router({
       component: editTheme,
       name: 'editTheme',
       beforeEnter: AuthGuard,
+      props: true
+    },
+    {
+      path: '/searchResults',
+      component: searchResults,
+      name: 'searchResults',
       props: true
     },
     {
