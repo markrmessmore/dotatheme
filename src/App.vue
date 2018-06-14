@@ -61,6 +61,9 @@ export default {
     }
   },
   computed: {
+    getUser: function () {
+      return this.$store.getters.getUser
+    },
     pendingApprovals: function () {
       return this.$store.getters.getThemesToApprove.length
     },
@@ -74,11 +77,11 @@ export default {
           icon: "create",
           link: "/createTheme"
         },
-        // {
-        //   title: "Advanced Search",
-        //   icon: "fas fa-search-plus",
-        //   link: "/search"
-        // },
+        {
+          title: "Advanced Search",
+          icon: "fas fa-search-plus",
+          link: "/search"
+        },
         {
           title: "About",
           icon: "fas fa-info-circle",
