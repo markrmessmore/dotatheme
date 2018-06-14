@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
-import * as emailConfig from '../email.js'
 import router from '../router'
 import axios from 'axios'
 

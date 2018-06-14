@@ -32,21 +32,26 @@
                   </v-card-text>
                   <v-layout row text-xs-center>
                     <v-flex xs12>
-                      <v-btn href="http://welikedota.com" large color="indigo" dark>
+                      <v-btn href="http://welikedota.com" color="indigo" dark>
                         <v-icon left>fas fa-globe</v-icon>
                         WLD on the Web
                       </v-btn>
-                      <v-btn href="https://itunes.apple.com/us/podcast/we-like-dota-podcasts/id799008929" large color="orange darken-3" dark>
+                      <v-btn href="https://itunes.apple.com/us/podcast/we-like-dota-podcasts/id799008929" color="orange darken-3" dark>
                         <v-icon left>fas fa-podcast</v-icon>
                         WLD Podcast
                       </v-btn>
-                      <v-btn href="https://discord.gg/0h2DOuBCUWs9XHZp" large color="deep-purple lighten-1" dark>
+                      <v-btn href="https://discord.gg/0h2DOuBCUWs9XHZp" color="deep-purple lighten-1" dark>
                         <v-icon left>fab fa-discord</v-icon>
                         WLD Discord
                       </v-btn>
-                      <v-btn href="https://twitter.com/welikedota" large color="blue lighten-2" dark>
+                      <br>
+                      <v-btn href="https://twitter.com/welikedota" color="blue lighten-2" dark>
                         <v-icon left>fab fa-twitter</v-icon>
                         WLD Twitter
+                      </v-btn>
+                      <v-btn class="secondary" href="https://github.com/markrmessmore/dotatheme">
+                        <v-icon left>fab fa-github</v-icon>
+                        DotaTheme Github
                       </v-btn>
                     </v-flex>
                   </v-layout>
