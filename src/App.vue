@@ -38,8 +38,13 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+
   <!-- CONTAINER -->
     <main>
+      <!-- ALERT TO THEMES PENDING APPROVAL -->
+        <v-alert type="info" v-if="getUser && getPending" :value="true">
+          There are currently {{getPending}} themes waiting approval
+        </v-alert>
         <router-view></router-view>
     </main>
     <template>
@@ -63,6 +68,9 @@ export default {
   computed: {
     getUser: function () {
       return this.$store.getters.getUser
+    },
+    getPending: function () {
+      return this.$store.getters.getThemesToApprove.length
     },
     pendingApprovals: function () {
       return this.$store.getters.getThemesToApprove.length
@@ -93,7 +101,7 @@ export default {
           link: "/login"
         },
       ]
-      if (this.$store.getters.getUser !== null && this.$store.getters.getUser !== "undefined") {
+      if (this.getUser !== null && this.getUser !== "undefined") {
         navList = [
           {
             title: "Create Theme",
