@@ -100,13 +100,28 @@
             <br>
             <v-layout row>
               <v-flex xs12>
+                <div class="text-xs-center pt-2 secondary">
+                  <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+                </div>
+                <v-layout row>
+                  <v-flex xs6 offset-xs6>
+                    <v-text-field
+                       append-icon="search"
+                       label="Quick search..."
+                       single-line
+                       hide-details
+                       v-model="search"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
                 <v-data-table
                   :headers="headers"
                   :items="getThemes"
                   class="elevation-5"
                   :search="search"
                   :loading="getLoading"
-                  :rows-per-page-items="rows"
+                  hide-actions
+                  :pagination.sync="pagination"
                 >
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
@@ -154,6 +169,9 @@
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
+                <div class="text-xs-center pt-2 secondary">
+                  <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+                </div>
               </v-flex>
             </v-layout>
           </v-container>
@@ -167,8 +185,11 @@
 export default {
   data () {
     return {
+      pagination: {
+        totalItems: 0,
+        rowsPerPage: 75,
+      },
       search: "",
-      rows: [10, 25, 50],
       randomNumber: 0,
       randomTheme: false,
       randomMatchup: false,
@@ -241,10 +262,18 @@ export default {
     },
     getThemes: function () {
       this.$store.dispatch('sortThemeHeroes');
+      this.pagination.totalItems=this.$store.getters.getThemes.length
       return this.$store.getters.getThemes
     },
     numberThemes: function () {
       return this.$store.getters.getThemes.length
+    },
+    pages () {
+      if (this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      ) return 0
+
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     }
   }
 }

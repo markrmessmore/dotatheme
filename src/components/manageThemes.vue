@@ -6,11 +6,16 @@
           <v-card-title>
             <h4 class="title">Themes pending approval</h4>
           </v-card-title>
+          <div class="text-xs-center pt-2 secondary">
+            <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+          </div>
           <v-data-table
             hide-actions
             :headers="approvalHeaders"
             :items="toBeApproved"
             class="elevation-5"
+            hide-actions
+            :pagination.sync="pagination"
           >
           <template slot="no-data">
             <v-alert :value="true" color="secondary">
@@ -121,6 +126,9 @@
               Your search for "{{ search }}" found no results.
             </v-alert>
           </v-data-table>
+          <div class="text-xs-center pt-2 secondary">
+            <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -131,6 +139,10 @@
 export default {
   data () {
     return {
+      pagination: {
+        totalItems: 0,
+        rowsPerPage: 75,
+      },
       search: "",
       headers: [
         {
@@ -204,6 +216,7 @@ export default {
   },
   computed: {
     getThemes: function (){
+      this.pagination.totalItems=this.$store.getters.getThemes.length
       return this.$store.getters.getThemes
     },
     getLoading: function () {
@@ -211,6 +224,12 @@ export default {
     },
     toBeApproved: function (){
       return this.$store.getters.getThemesToApprove
+    },
+    pages () {
+      if (this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      ) return 0
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     }
   }
 }
@@ -218,7 +237,7 @@ export default {
 
 <style lang="css">
 .data-row:nth-child(odd) {
-  background: #3F51B5;
+  background: black;
   color: white;
 }
 .data-row:hover{
